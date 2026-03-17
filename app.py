@@ -41,7 +41,7 @@ textarea {
     border: 1px solid #1a2540 !important;
     border-radius: 6px !important;
     font-family: 'Space Mono', monospace !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     line-height: 1.75 !important;
     caret-color: #4af !important;
 }
@@ -50,7 +50,7 @@ textarea:focus { border-color: #2255aa !important; box-shadow: 0 0 0 2px #113355
 .stButton>button {
     font-family: 'Space Mono', monospace !important;
     font-weight: 700 !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
     background: #0d1a35 !important;
@@ -76,12 +76,12 @@ textarea:focus { border-color: #2255aa !important; box-shadow: 0 0 0 2px #113355
 }
 [data-testid="stMetricValue"] {
     font-family: 'Space Mono', monospace !important;
-    font-size: 1.6rem !important;
+    font-size: 2.2rem !important;
     color: #3af !important;
 }
 [data-testid="stMetricLabel"] {
     font-family: 'Space Mono', monospace !important;
-    font-size: 10px !important;
+    font-size: 13px !important;
     color: #445577 !important;
     letter-spacing: 0.12em !important;
     text-transform: uppercase !important;
@@ -98,15 +98,15 @@ textarea:focus { border-color: #2255aa !important; box-shadow: 0 0 0 2px #113355
     border: 1px solid #1a2540 !important;
     color: #aabbcc !important;
     font-family: 'Space Mono', monospace !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     border-radius: 4px !important;
 }
 
-.stAlert { border-radius: 6px !important; font-family: 'Space Mono', monospace !important; font-size: 12px !important; }
+.stAlert { border-radius: 6px !important; font-family: 'Space Mono', monospace !important; font-size: 13px !important; }
 
 .stDownloadButton>button {
     font-family: 'Space Mono', monospace !important;
-    font-size: 11px !important;
+    font-size: 13px !important;
     letter-spacing: 0.08em !important;
     text-transform: uppercase !important;
     background: #051508 !important;
@@ -123,7 +123,7 @@ textarea:focus { border-color: #2255aa !important; box-shadow: 0 0 0 2px #113355
 
 .streamlit-expanderHeader {
     font-family: 'Space Mono', monospace !important;
-    font-size: 11px !important;
+    font-size: 13px !important;
     letter-spacing: 0.08em !important;
     color: #4466aa !important;
     background: #09111f !important;
@@ -138,6 +138,42 @@ textarea:focus { border-color: #2255aa !important; box-shadow: 0 0 0 2px #113355
 
 hr { border-color: #151c2e !important; }
 
+:root, [data-theme="light"], [data-theme="dark"] { color-scheme: dark !important; }
+html { color-scheme: dark !important; }
+
+[data-testid="stAppViewContainer"],
+[data-testid="stHeader"],
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stBottom"],
+.stApp, .main, .block-container,
+section[data-testid="stSidebar"] {
+    background-color: #06080f !important;
+    color: #d4ddf0 !important;
+}
+
+[data-testid="collapsedControl"] {
+    background: #09111f !important;
+    border: 1px solid #1a2540 !important;
+    border-radius: 6px !important;
+    color: #44aaff !important;
+}
+[data-testid="collapsedControl"]:hover {
+    background: #1a2540 !important;
+    border-color: #3399ff !important;
+}
+[data-testid="collapsedControl"] svg {
+    fill: #44aaff !important;
+    stroke: #44aaff !important;
+}
+
+input, select, option {
+    background: #09111f !important;
+    color: #c5d5f0 !important;
+    border-color: #1a2540 !important;
+}
+p, span, label, div { color: #d4ddf0; }
+
 .stTabs [data-baseweb="tab-list"] {
     background: #09111f !important;
     border-bottom: 1px solid #151c2e !important;
@@ -145,7 +181,7 @@ hr { border-color: #151c2e !important; }
 }
 .stTabs [data-baseweb="tab"] {
     font-family: 'Space Mono', monospace !important;
-    font-size: 11px !important;
+    font-size: 13px !important;
     letter-spacing: 0.08em !important;
     color: #445577 !important;
     background: transparent !important;
@@ -166,6 +202,33 @@ hr { border-color: #151c2e !important; }
 </style>
 """, unsafe_allow_html=True)
 
+# ═══════════════════════════════════════════════════════
+#  LENIS SMOOTH SCROLL
+# ═══════════════════════════════════════════════════════
+st.markdown("""
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script>
+(function() {
+    function initLenis() {
+        var scrollEl = document.querySelector('.main') ||
+                       document.querySelector('[data-testid="stAppViewContainer"]') ||
+                       document.documentElement;
+        var lenis = new Lenis({
+            wrapper: scrollEl, content: scrollEl,
+            duration: 1.4,
+            easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+            direction: 'vertical', smoothWheel: true,
+            wheelMultiplier: 0.9, touchMultiplier: 1.8, infinite: false,
+        });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initLenis);
+    } else { setTimeout(initLenis, 500); }
+})();
+</script>
+""", unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════
 #  ISA CONFIG
@@ -177,24 +240,13 @@ OPCODES = {
     'st': 15,  'beq': 16, 'bgt': 17, 'b': 18,   'call': 19, 'ret': 20,
 }
 
-# Modifier suffix → imm[17:16] top 2 bits
-# no modifier → 00  (signed, sign-extended)
-# u modifier  → 01  (unsigned, zero-extended)
-# h modifier  → 10  (shift left 16)
-MODIFIER_BITS = {
-    '':  0b00,
-    'u': 0b01,
-    'h': 0b10,
-}
+MODIFIER_BITS = { '': 0b00, 'u': 0b01, 'h': 0b10 }
 
-# Base mnemonic from a potentially-modified opcode
-# e.g. 'addu' → ('add', 'u'),  'movh' → ('mov', 'h'),  'add' → ('add', '')
 def split_modifier(op):
-    if op.endswith('u') and op[:-1] in OPCODES:
-        return op[:-1], 'u'
-    if op.endswith('h') and op[:-1] in OPCODES:
-        return op[:-1], 'h'
+    if op.endswith('u') and op[:-1] in OPCODES: return op[:-1], 'u'
+    if op.endswith('h') and op[:-1] in OPCODES: return op[:-1], 'h'
     return op, ''
+
 REGISTERS = {f"r{i}": i for i in range(16)}
 REGISTERS['sp'] = 14
 REGISTERS['ra'] = 15
@@ -293,9 +345,9 @@ nop""",
 
     "Modifiers (u/h)": """\
 // Modifier example: Load r1 with 0xC3D5A1B2
-// movh  → imm[17:16] = 10  (left shift 16)
-// addu  → imm[17:16] = 01  (unsigned)
-// mov   → imm[17:16] = 00  (signed, default)
+// movh  imm[17:16] = 10  (left shift 16)
+// addu  imm[17:16] = 01  (unsigned)
+// mov   imm[17:16] = 00  (signed, default)
 movh r1, 0xC3D5     // r1 = 0xC3D50000
 addu r1, r1, 0xA1B2 // r1 = 0xC3D5A1B2
 mov  r2, 0xA1B2     // signed sign-extended
@@ -311,13 +363,28 @@ def parse_reg(s):
     return REGISTERS.get(s.strip().lower(), 0)
 
 def parse_imm(s):
+    orig = s
     s = s.strip()
+    neg = False
+    if s.startswith('-'):
+        neg = True
+        s = s[1:].strip()
     try:
-        if s.startswith(('0x', '-0x')): return int(s, 16)
-        if s.startswith(('0b', '-0b')): return int(s, 2)
-        return int(s)
+        if s.lower().startswith('0x'):
+            val = int(s, 16)
+        elif s.lower().startswith('0b'):
+            val = int(s, 2)
+        elif s.startswith('#'):
+            val = int(s[1:], 16)
+        elif re.fullmatch(r'\d+', s):
+            val = int(s, 10)
+        elif re.fullmatch(r'[0-9a-fA-F]+', s) and re.search(r'[a-fA-F]', s):
+            val = int(s, 16)
+        else:
+            val = int(s, 10)
     except ValueError:
-        return 0
+        raise ValueError(f"Invalid immediate: '{orig}'")
+    return -val if neg else val
 
 def assemble(src):
     lines  = src.split('\n')
@@ -342,14 +409,12 @@ def assemble(src):
     errors  = []
 
     for pc, inst in insts:
-        parts = [p for p in re.split(r'[\s,]+', inst) if p]
+        parts  = [p for p in re.split(r'[\s,]+', inst) if p]
         raw_op = parts[0].lower()
-
-        # Resolve modifier: 'addu' → base='add', mod='u'
         base_op, modifier = split_modifier(raw_op)
 
         if base_op not in OPCODES:
-            errors.append(f"PC 0x{pc:04X} → Unknown opcode: '{raw_op}'")
+            errors.append(f"PC 0x{pc:04X}  Unknown opcode: '{raw_op}'")
             continue
 
         op  = base_op
@@ -380,29 +445,24 @@ def assemble(src):
                     rd, rs1, op2 = parse_reg(parts[1]), parse_reg(parts[2]), parts[3]
 
                 if op2.lower() in REGISTERS:
-                    # Register operand — no modifier bits needed
                     enc = (opc << 27) | (parse_reg(op2) << 14) | (rd << 22) | (rs1 << 18)
                 else:
-                    # Immediate operand — encode modifier in top 2 bits of 18-bit imm field
                     imm_val  = parse_imm(op2)
                     mod_bits = MODIFIER_BITS.get(modifier, 0b00)
-                    # imm[17:16] = mod_bits, imm[15:0] = lower 16 bits of value
-                    imm18 = (mod_bits << 16) | (imm_val & 0xFFFF)
-                    enc   = (opc << 27) | (1 << 26) | (rd << 22) | (rs1 << 18) | imm18
+                    imm18    = (mod_bits << 16) | (imm_val & 0xFFFF)
+                    enc      = (opc << 27) | (1 << 26) | (rd << 22) | (rs1 << 18) | imm18
 
         except Exception as e:
-            errors.append(f"PC 0x{pc:04X} → Syntax error in '{inst}': {e}")
+            errors.append(f"PC 0x{pc:04X}  Syntax error in '{inst}': {e}")
             continue
 
-        enc &= 0xFFFFFFFF
-        b    = f"{enc:032b}"
+        enc  &= 0xFFFFFFFF
+        b     = f"{enc:032b}"
         b_fmt = f"{b[0:5]} {b[5]} {b[6:10]} {b[10:14]} {b[14:]}"
 
         results.append({
-            "PC (Hex)":      f"0x{pc:04X}",
-            "PC (Dec)":      pc,
-            "Hex":           f"0x{enc:08X}",
-            "Dec (Unsigned)": enc,
+            "PC":            f"0x{pc:04X}",
+            "PC_dec":        pc,
             "Binary":        b_fmt,
             "opcode[31:27]": b[0:5],
             "I[26]":         b[5],
@@ -415,55 +475,20 @@ def assemble(src):
     return results, errors
 
 
-# ═══════════════════════════════════════════════════════
-#  SIDEBAR
-# ═══════════════════════════════════════════════════════
-with st.sidebar:
-    st.markdown("### 🔩 SimpleRISC")
-    st.markdown("---")
-    st.markdown("**LOAD EXAMPLE**")
-    ex = st.selectbox("", list(EXAMPLES.keys()), label_visibility="collapsed", key="example_select")
-
-    st.markdown("---")
-    st.markdown("**ISA QUICK REF**")
-
-    type_colors = {
-        "ALU":   "#3af", "CMP": "#fa0", "MOV": "#af6",
-        "MEM":   "#f73", "BR":  "#b8f", "SHIFT": "#6cf", "NOP": "#888"
-    }
-    for mnem, opc, typ in zip(ISA_TABLE["Mnemonic"], ISA_TABLE["Opcode"], ISA_TABLE["Type"]):
-        col = type_colors.get(typ, "#aaa")
-        st.markdown(
-            f'<div style="display:flex;justify-content:space-between;align-items:center;'
-            f'padding:3px 0;border-bottom:1px solid #0e1525;">'
-            f'<code style="color:{col};font-size:11px;font-family:Space Mono,monospace">{mnem}</code>'
-            f'<span style="font-family:Space Mono,monospace;font-size:10px;color:#2a3a55">{opc}</span>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
-
-    st.markdown("---")
-    st.markdown(
-        '<p style="font-family:Space Mono,monospace;font-size:9px;color:#1e2d45;'
-        'text-transform:uppercase;letter-spacing:0.1em">32-bit RISC · 21 instructions<br>'
-        'PC-relative branches · 16 registers</p>',
-        unsafe_allow_html=True
-    )
-
 
 # ═══════════════════════════════════════════════════════
 #  MAIN HEADER
 # ═══════════════════════════════════════════════════════
 st.markdown(
-    '<h1 style="font-family:Unbounded,sans-serif;font-size:2rem;font-weight:900;'
+    '<h1 style="font-family:Unbounded,sans-serif;font-size:2.6rem;font-weight:900;'
     'background:linear-gradient(90deg,#3af 0%,#88f 50%,#3fa 100%);'
     '-webkit-background-clip:text;-webkit-text-fill-color:transparent;'
     'background-clip:text;margin-bottom:0">SimpleRISC Assembler</h1>',
     unsafe_allow_html=True
 )
 st.markdown(
-    '<p style="font-family:Space Mono,monospace;color:#2a3f60;font-size:11px;'
-    'letter-spacing:0.1em;margin-top:4px">ASSEMBLY → 32-BIT MACHINE CODE  ·  HEX + BINARY + PC ADDRESS</p>',
+    '<p style="font-family:Space Mono,monospace;color:#2a3f60;font-size:14px;'
+    'letter-spacing:0.1em;margin-top:4px">ASSEMBLY  →  32-BIT MACHINE CODE  ·  BINARY + PC ADDRESS</p>',
     unsafe_allow_html=True
 )
 st.markdown("---")
@@ -477,13 +502,13 @@ editor_col, output_col = st.columns([1, 1], gap="large")
 # ── LEFT: EDITOR ──────────────────────────────────────
 with editor_col:
     st.markdown(
-        '<p style="font-family:Space Mono,monospace;font-size:10px;color:#3af;'
-        'letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">▶ ASSEMBLY INPUT</p>',
+        '<p style="font-family:Space Mono,monospace;font-size:13px;color:#3af;'
+        'letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">▶ Assembly Input</p>',
         unsafe_allow_html=True
     )
 
     default_code = """\
-// SimpleRISC Assembler — Apna code likhein
+// SimpleRISC Assembler — Write your code
 
 mov r1, 5
 mov r2, 10
@@ -491,55 +516,55 @@ add r3, r1, r2
 sub r4, r2, r1
 nop"""
 
-    # Initialize on first run
     if "code_cache" not in st.session_state:
         st.session_state["code_cache"] = default_code
+    if "editor_key" not in st.session_state:
+        st.session_state["editor_key"] = 0
 
-    # Load example into editor when sidebar selection changes
+    # ── Example dropdown — main page ──
+    ex = st.selectbox(
+        "Load Example",
+        list(EXAMPLES.keys()),
+        key="example_select",
+        label_visibility="collapsed",
+    )
+
     if ex != "── Pick an example ──":
         new_val = EXAMPLES.get(ex, "")
         if new_val and new_val != st.session_state.get("last_ex_loaded", ""):
-            st.session_state["asm_editor"] = new_val
             st.session_state["code_cache"] = new_val
             st.session_state["last_ex_loaded"] = new_val
+            st.session_state["editor_key"] += 1
 
-    code = st.text_area(
-        "",
-        height=380,
-        label_visibility="collapsed",
-        key="asm_editor",
-        placeholder="// Assembly code yahan...",
-    )
-    st.session_state["code_cache"] = code
-
-    b1, b2, b3 = st.columns([2, 1, 1])
+    b1, b2 = st.columns([2, 1])
     with b1:
-        run   = st.button("⚙  ASSEMBLE", use_container_width=True)
+        run   = st.button("⚙  Assemble", use_container_width=True)
     with b2:
-        clear = st.button("✕  CLEAR", use_container_width=True)
-    with b3:
-        demo  = st.button("◈  DEMO", use_container_width=True)
+        clear = st.button("✕  Clear", use_container_width=True)
 
     if clear:
-        st.session_state["asm_editor"] = ""
         st.session_state["code_cache"] = ""
         st.session_state["last_ex_loaded"] = ""
         st.session_state["asm_result"] = []
         st.session_state["asm_errors"] = []
+        st.session_state["editor_key"] += 1
         st.rerun()
 
-    if demo:
-        val = EXAMPLES["Loop (sum 1..5)"]
-        st.session_state["asm_editor"] = val
-        st.session_state["code_cache"] = val
-        st.session_state["last_ex_loaded"] = val
-        st.rerun()
+    code = st.text_area(
+        "",
+        value=st.session_state["code_cache"],
+        height=400,
+        label_visibility="collapsed",
+        key=f"asm_editor_{st.session_state['editor_key']}",
+        placeholder="// Assembly code yahan likhein...",
+    )
+    st.session_state["code_cache"] = code
 
 # ── RIGHT: OUTPUT ──────────────────────────────────────
 with output_col:
     st.markdown(
-        '<p style="font-family:Space Mono,monospace;font-size:10px;color:#8f6;'
-        'letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">◉ MACHINE CODE OUTPUT</p>',
+        '<p style="font-family:Space Mono,monospace;font-size:13px;color:#8f6;'
+        'letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">◉ Machine Code Output</p>',
         unsafe_allow_html=True
     )
 
@@ -575,12 +600,12 @@ with output_col:
         st.markdown("<br>", unsafe_allow_html=True)
 
         tab_main, tab_fields, tab_raw = st.tabs([
-            "  FULL TABLE  ", "  FIELD BREAKDOWN  ", "  RAW HEX  "
+            "  Full Table  ", "  Field Breakdown  ", "  Raw Output  "
         ])
 
         with tab_main:
             df_main = pd.DataFrame([{
-                "PC":          r["PC (Hex)"],
+                "PC":          r["PC"],
                 "Binary":      r["Binary"],
                 "Instruction": r["Instruction"],
             } for r in res])
@@ -588,17 +613,17 @@ with output_col:
                 df_main,
                 use_container_width=True,
                 hide_index=True,
-                height=min(38 * n + 40, 500),
+                height=min(40 * n + 50, 520),
                 column_config={
-                    "PC":          st.column_config.TextColumn("PC", width=90),
-                    "Binary":      st.column_config.TextColumn("Binary (opc I rd rs1 imm)", width=260),
-                    "Instruction": st.column_config.TextColumn("Instruction", width=200),
+                    "PC":          st.column_config.TextColumn("PC (Hex)", width=100),
+                    "Binary":      st.column_config.TextColumn("Binary  (opc · I · rd · rs1 · imm)", width=270),
+                    "Instruction": st.column_config.TextColumn("Instruction", width=210),
                 }
             )
 
         with tab_fields:
             df_fields = pd.DataFrame([{
-                "PC":            r["PC (Hex)"],
+                "PC":            r["PC"],
                 "opcode[31:27]": r["opcode[31:27]"],
                 "I[26]":         r["I[26]"],
                 "rd[25:22]":     r["rd[25:22]"],
@@ -610,49 +635,38 @@ with output_col:
                 df_fields,
                 use_container_width=True,
                 hide_index=True,
-                height=min(38 * n + 40, 500),
+                height=min(40 * n + 50, 520),
             )
 
         with tab_raw:
             raw_lines = "\n".join(
-                f"{r['PC (Hex)']}  {r['Binary']}  // {r['Instruction']}"
+                f"{r['PC']}  {r['Binary']}  // {r['Instruction']}"
                 for r in res
             )
             st.code(raw_lines, language="text")
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # ── Download buttons ──
-        txt_data = "PC (Hex)  | Binary                            | Instruction\n"
-        txt_data += "-" * 75 + "\n"
+        # ── Download (.txt only) ──
+        txt_data  = "PC (Hex)  | Binary                              | Instruction\n"
+        txt_data += "-" * 78 + "\n"
         for r in res:
-            txt_data += f"{r['PC (Hex)']:<10}| {r['Binary']:<35}| {r['Instruction']}\n"
+            txt_data += f"{r['PC']:<10}| {r['Binary']:<37}| {r['Instruction']}\n"
 
-        csv_data = "PC (Hex),PC (Dec),Binary,opcode[31:27],I[26],rd[25:22],rs1[21:18],imm/rs2[17:0],Instruction\n"
-        for r in res:
-            csv_data += ",".join([
-                r["PC (Hex)"], str(r["PC (Dec)"]),
-                r["Binary"], r["opcode[31:27]"], r["I[26]"],
-                r["rd[25:22]"], r["rs1[21:18]"], r["imm/rs2[17:0]"],
-                f'"{r["Instruction"]}"'
-            ]) + "\n"
-
-        dl1, dl2 = st.columns(2)
-        with dl1:
-            st.download_button("⬇  Download .txt", data=txt_data,
-                               file_name="output.txt", mime="text/plain",
-                               use_container_width=True)
-        with dl2:
-            st.download_button("⬇  Download .csv", data=csv_data,
-                               file_name="output.csv", mime="text/csv",
-                               use_container_width=True)
+        st.download_button(
+            "⬇  Download Output (.txt)",
+            data=txt_data,
+            file_name="machine_code.txt",
+            mime="text/plain",
+            use_container_width=True,
+        )
 
     elif not errs:
         st.markdown(
-            '<div style="height:200px;display:flex;align-items:center;'
+            '<div style="height:220px;display:flex;align-items:center;'
             'justify-content:center;border:1px dashed #151c2e;border-radius:8px;">'
-            '<p style="font-family:Space Mono,monospace;font-size:11px;color:#1e2d45;">'
-            '// ASSEMBLE dabao → output yahan aayega</p></div>',
+            '<p style="font-family:Space Mono,monospace;font-size:14px;color:#1e2d45;">'
+            '// Assemble dabao → output yahan aayega</p></div>',
             unsafe_allow_html=True
         )
 
@@ -665,33 +679,40 @@ st.markdown("---")
 col_isa, col_fmt = st.columns([1, 1], gap="large")
 
 with col_isa:
-    with st.expander("📖  FULL ISA REFERENCE — 21 Instructions"):
+    with st.expander("📖  Full ISA Reference — 27 Mnemonics"):
         df_isa = pd.DataFrame(ISA_TABLE)
         st.dataframe(
             df_isa,
             use_container_width=True,
             hide_index=True,
-            height=430,
+            height=480,
             column_config={
-                "Mnemonic":    st.column_config.TextColumn("Mnemonic", width=90),
-                "Opcode":      st.column_config.TextColumn("Opcode (5-bit)", width=110),
-                "Type":        st.column_config.TextColumn("Type", width=70),
-                "imm[17:16]":  st.column_config.TextColumn("imm[17:16]", width=90),
-                "Syntax":      st.column_config.TextColumn("Syntax", width=240),
+                "Mnemonic":   st.column_config.TextColumn("Mnemonic",      width=90),
+                "Opcode":     st.column_config.TextColumn("Opcode (5-bit)", width=110),
+                "Type":       st.column_config.TextColumn("Type",           width=70),
+                "imm[17:16]": st.column_config.TextColumn("imm[17:16]",    width=90),
+                "Syntax":     st.column_config.TextColumn("Syntax",         width=240),
             }
         )
 
 with col_fmt:
-    with st.expander("ℹ️  INSTRUCTION FORMAT LEGEND"):
+    with st.expander("ℹ️  Instruction Format Legend"):
         st.markdown("""
 **32-bit Instruction Layout:**
 
 ```
 [31:27] opcode   — 5 bits
-[26]    I-bit    — 1 = immediate, 0 = register
-[25:22] rd       — destination register (4 bits)
-[21:18] rs1      — source register 1   (4 bits)
-[17:0]  imm/rs2  — immediate (18 bits) or rs2 (4 bits)
+[26]    I-bit    — 1 = immediate,  0 = register
+[25:22] rd       — destination register  (4 bits)
+[21:18] rs1      — source register 1     (4 bits)
+[17:0]  imm/rs2  — immediate (18 bits)  OR  rs2 (4 bits)
+```
+
+**Immediate modifier bits imm[17:16]:**
+```
+00  →  signed,   sign-extended  (default)
+01  →  unsigned, zero-extended  (u suffix)
+10  →  left shift by 16         (h suffix)
 ```
 
 **Branch Format:**
@@ -701,13 +722,13 @@ offset = (target_addr - current_pc) / 4
 ```
 
 **Registers:**
-- `r0–r13` → general purpose
-- `r14` = `sp` (stack pointer)
-- `r15` = `ra` (return address)
+- `r0 – r13`  general purpose
+- `r14 = sp`  stack pointer
+- `r15 = ra`  return address
         """)
 
 st.markdown(
-    '<p style="text-align:center;font-family:Space Mono,monospace;font-size:9px;'
+    '<p style="text-align:center;font-family:Space Mono,monospace;font-size:11px;'
     'color:#111c2e;letter-spacing:0.15em;margin-top:2rem">'
     'SIMPLERISC ASSEMBLER  ·  32-BIT RISC ARCHITECTURE</p>',
     unsafe_allow_html=True
